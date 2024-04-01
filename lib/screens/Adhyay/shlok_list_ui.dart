@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gita_book/util/colors/resuable_properties.dart';
 import 'package:gita_book/util/colors/theme_colors.dart';
 import 'package:gita_book/util/gita_data.dart';
@@ -149,7 +150,7 @@ class _ShlokListState extends State<ShlokList> {
           ),
 
           //copy and share button
-          addCpyShareBtn(),
+          addCpyShareBtn(index, 'shlok', 'meaning'),
         ],
       ),
     );
@@ -168,7 +169,7 @@ class _ShlokListState extends State<ShlokList> {
     );
   }
 
-  addCpyShareBtn() {
+  addCpyShareBtn(int index, String key1, String key2) {
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -181,7 +182,7 @@ class _ShlokListState extends State<ShlokList> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          textBtn(btnName: 'COPY'),
+          textBtn(btnName: 'COPY', index: index, key1: key1, key2: key2),
           const SizedBox(
             width: 50,
           ),
@@ -191,7 +192,7 @@ class _ShlokListState extends State<ShlokList> {
     );
   }
 
-  textBtn({required String btnName}) {
+  textBtn({required String btnName,int? index, String? key1, String? key2}) {
     return CupertinoButton(
       onPressed: () {
         if (btnName == 'COPY') {
@@ -203,6 +204,9 @@ class _ShlokListState extends State<ShlokList> {
           //     backgroundColor: Colors.white,
           //     textColor: Colors.black,
           //     fontSize: 16.0);
+
+          Clipboard.setData(ClipboardData(text: '${data[0]['chapters'][chapterIndex]['shloks'][index][key1]} \n ${data[0]['chapters'][chapterIndex]['shloks'][index][key2]}'),);
+
           const snackBar = SnackBar(
             duration: Duration(seconds: 1),
             content: Text(
